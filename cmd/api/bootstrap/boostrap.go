@@ -1,0 +1,22 @@
+package bootstrap
+
+import (
+	//"fmt"
+	"nequi.com/poc-services/internal/platform/server"
+	"nequi.com/poc-services/internal/platform/storage"
+	"nequi.com/poc-services/internal/services/credits"
+	"nequi.com/poc-services/internal/repository"
+)
+
+const (
+	host = "localhost"
+	port = 8080
+)
+
+func Run() error {
+	creditsRepository := dynamo.NewDynamoRepository()
+	var _ creditsrepository.CreditsRepository = creditsRepository
+	getCreditsByClientService := services.NewGetCreditsByClientService(creditsRepository)
+	srv := server.New(host, port, getCreditsByClientService)
+	return srv.Run()
+}
