@@ -16,7 +16,7 @@ const (
 func Run() error {
 	creditsRepository := dynamo.NewDynamoRepository()
 	var _ creditsrepository.CreditsRepository = creditsRepository
-	getCreditsByClientService := services.NewGetCreditsByClientService(creditsRepository)
-	srv := server.New(host, port, getCreditsByClientService)
+	getCreditService := services.NewGetCreditService(creditsRepository)
+	srv := server.New(host, port, getCreditService)
 	return srv.Run()
 }

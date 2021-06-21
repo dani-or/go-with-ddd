@@ -12,14 +12,14 @@ import (
 type Server struct {
 	httpAddr string
 	engine   *gin.Engine
-	getCreditsByClientService  services.GetCreditsByClientService
+	getCreditService  services.GetCreditService
 }
 
-func New(host string, port uint, getCreditsByClientService services.GetCreditsByClientService ) Server {
+func New(host string, port uint, getCreditService services.GetCreditService ) Server {
 	srv := Server{
 		engine:   gin.New(),
 		httpAddr: fmt.Sprintf("%s:%d", host, port),
-		getCreditsByClientService: getCreditsByClientService,
+		getCreditService: getCreditService,
 	}
 	srv.registerRoutes()
 	return srv
@@ -32,5 +32,5 @@ func (s *Server) Run() error {
 
 func (s *Server) registerRoutes() {
 	s.engine.GET("/health", health.CheckHandler())
-	s.engine.POST("/creditsbyclient", credits.GetCreditsByClientHandler(s.getCreditsByClientService))
+	s.engine.POST("/getcredit", credits.GetCreditHandler(s.getCreditService))
 }

@@ -1,8 +1,9 @@
 package creditsrepository
 
 import (
+	"nequi.com/poc-services/internal/domain"
 )
 
 type CreditsRepository interface {
-	GetCreditsByClient(documentType, documentNumber string) ([]string, error)
+	GetCredit(customerId, debenture string) (credit.Credit, error)
 }
