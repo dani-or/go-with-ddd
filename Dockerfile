@@ -1,14 +1,11 @@
+#docker image build -t new .
+#docker run --network host -d new
 FROM golang:alpine AS build
-LABEL Author="Daniela Osorio R <danosori@bancolombia.com.co>"
-
-ENV NEQUI_CREDITS_TABLE_NAME="credit-customer-product-qa"
-
 WORKDIR /go/src/myapp
 COPY . .
-
-EXPOSE 9443
-RUN go build -o /go/bin/myapp cmd/api/main.go
-
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/myapp cmd/api/main.go
 FROM scratch
+ENV NEQUI_CREDITS_TABLE_NAME=credit-customer-product-qa
 COPY --from=build /go/bin/myapp /go/bin/myapp
+EXPOSE 8080
 ENTRYPOINT ["/go/bin/myapp"]
