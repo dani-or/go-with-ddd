@@ -17,7 +17,14 @@ type DynamoRepository struct {
 }
 
 func NewDynamoRepository() *DynamoRepository {
-	svc := dynamodb.New(session.New(),&aws.Config{Region: aws.String("us-east-1")})
+	sess, err := session.NewSession(&aws.Config{
+		Region: aws.String("us-east-1")},
+	)
+
+	if err != nil{
+		fmt.Println(err)
+	}
+	svc := dynamodb.New(sess)
 	return &DynamoRepository{
 		client: svc,
 	}
@@ -37,6 +44,11 @@ type Item struct {
 //requiere la variable de entorno export NEQUI_CREDITS_TABLE_NAME=credit-customer-product-qa
 func (r *DynamoRepository) GetCredit(customerId, debenture string) (credit.Credit, error) {
 	tableName := os.Getenv("NEQUI_CREDITS_TABLE_NAME")
+	fmt.Println("entró");
+	fmt.Println(tableName);
+	fmt.Println(customerId);
+	fmt.Println(debenture);
+	fmt.Println(r.client);
 	result, err := r.client.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -48,6 +60,9 @@ func (r *DynamoRepository) GetCredit(customerId, debenture string) (credit.Credi
 			},
 		},
 	})
+	fmt.Println("respondio");
+	fmt.Println(err);
+
 	if err != nil {
 		log.Fatalf("Got error calling GetItem: %s", err)
 		return credit.Credit{}, err;
@@ -64,7 +79,7 @@ func (r *DynamoRepository) GetCredit(customerId, debenture string) (credit.Credi
 		panic(fmt.Sprintf("Failed to unmarshal Record, %v", err))
 		return credit.Credit{}, errors.New("Error de parse");
 	}
-	
+	fmt.Println("salió");
 	credit, error := credit.NewCredit(item.Value, item.Status, item.EndDate, item.StartDate , item.Debenture )
 	return credit, error
 }
