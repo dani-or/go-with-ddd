@@ -9,14 +9,14 @@ import (
 )
 
 const (
-	host = "localhost"
+	host = "0.0.0.0"
 	port = 8080
 )
 
 func Run() error {
 	creditsRepository := dynamo.NewDynamoRepository()
 	var _ creditsrepository.CreditsRepository = creditsRepository
-	getCreditsByClientService := services.NewGetCreditsByClientService(creditsRepository)
-	srv := server.New(host, port, getCreditsByClientService)
+	getCreditService := services.NewGetCreditService(creditsRepository)
+	srv := server.New(host, port, getCreditService)
 	return srv.Run()
 }
