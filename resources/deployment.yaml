@@ -1,0 +1,28 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-with-ddd-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+      ambiente: pruebas
+      lenguaje: node
+      project: go-with-ddd
+  template:
+    metadata:
+      labels:
+        app: backend
+        ambiente: pruebas
+        lenguaje: node
+        project: go-with-ddd
+    spec:
+      serviceAccountName: go-with-ddd-service-account-name-1
+      containers:
+        - name: go-with-ddd
+          image: 851560454673.dkr.ecr.us-east-1.amazonaws.com/go-with-ddd:latest
+          ports:
+            - containerPort: 8080
