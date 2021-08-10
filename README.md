@@ -4,7 +4,7 @@ Este proyecto contiene 2 pruebas de concepto:
 * servicio rest con acceso a Dynamo: /getcredit, esta prueba consulta la tabla `credit-customer-product-qa` y responde la información que se tenga guardada actualmente en la tabla con los parametros de entrada.
 
 ### Diagrama de Clases 
-![Diagram de clases ](/resources/images/clases.png?raw=true "Diagrama de clases")
+![Diagram de clases ](/go-with-ddd/resources/images/clases.png?raw=true "Diagrama de clases")
 
 # Install local
 Para instalar localmente el proyecto 
